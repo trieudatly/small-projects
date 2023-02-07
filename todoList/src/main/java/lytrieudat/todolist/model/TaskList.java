@@ -30,12 +30,12 @@ public class TaskList {
         if (file.exists()) {
             list = (ArrayList<Task>) XFile.readObject(path);
         } else {
-            initNewTask();
+            saveToFile();
         }
     }
 
     private void initNewTask() {
-        list.add(new Task("01", "go to bed", today, true));
+        list.add(new Task("go to bed", today, false));
 
     }
 
@@ -53,12 +53,10 @@ public class TaskList {
     public void renderToTable(DefaultTableModel tblModel) {
         tblModel.setRowCount(0);
         for (Task task : list) {
-            Object[] row = new Object[]{
-                task.getId(),
-                task.getDetail(),
+            tblModel.addRow(new Object[]{
                 task.getDate(),
-                task.isChecked()};
-            tblModel.addRow(row);
+                task.getDetail(),
+                task.isChecked()});
         }
         tblModel.fireTableDataChanged();
     }

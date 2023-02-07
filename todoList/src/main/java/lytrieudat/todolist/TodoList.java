@@ -5,8 +5,11 @@
 package lytrieudat.todolist;
 
 //import javafx.scene.control.Tab;
+import java.time.LocalDate;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import lytrieudat.todolist.helper.Validator;
+import lytrieudat.todolist.model.Task;
 import lytrieudat.todolist.model.TaskList;
 
 /**
@@ -30,8 +33,9 @@ public class TodoList extends javax.swing.JFrame {
     }
 
     public void initTable() {
-        tblModel = new DefaultTableModel();
-        tblModel.setColumnIdentifiers(new Object[]{"ID", "Detail", "Date", "State"});
+        tblModel = (DefaultTableModel) tblList.getModel();
+        tblModel.setColumnIdentifiers(new Object[]{"Detail", "Date", "State"});
+
         tblList.setModel(tblModel);
     }
 
@@ -65,62 +69,80 @@ public class TodoList extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("To Do List");
+        setMinimumSize(new java.awt.Dimension(500, 700));
+        setPreferredSize(new java.awt.Dimension(500, 700));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel1.setText("To Do List");
 
+        tblList.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         tblList.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Title 1", "Title 2", "Title 3"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        tblList.setRowHeight(40);
         jScrollPane1.setViewportView(tblList);
 
         txtInput.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         btnAddTask.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnAddTask.setText("Add task");
+        btnAddTask.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddTaskActionPerformed(evt);
+            }
+        });
 
         btnClearFinishedTask.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnClearFinishedTask.setText("Clear finished tasks");
+        btnClearFinishedTask.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearFinishedTaskActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jSeparator1)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jSeparator2)
-                        .addContainerGap())))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(182, 182, 182)
-                        .addComponent(jLabel1))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(182, 182, 182)
+                                .addComponent(jLabel1))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(25, 25, 25)
+                                .addComponent(btnAddTask)
+                                .addGap(151, 151, 151)
+                                .addComponent(btnClearFinishedTask)))
+                        .addGap(0, 19, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1)
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.LEADING)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(25, 25, 25)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnAddTask)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnClearFinishedTask))
-                            .addComponent(txtInput, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(25, Short.MAX_VALUE))
+                        .addComponent(txtInput)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,6 +166,32 @@ public class TodoList extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAddTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddTaskActionPerformed
+        try {
+            StringBuilder sb = new StringBuilder();
+            Validator.checkEmpty(txtInput, sb, "Please write some thing!!!");
+            if (sb.length() > 0) {
+                JOptionPane.showMessageDialog(this, sb.toString(), "Invalid Data", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            Task task = new Task();
+            task.setDetail(txtInput.getText());
+            task.setDate(LocalDate.now());
+            task.setChecked(false);
+            taskList.add(task);
+            taskList.saveToFile();
+            txtInput.setText("");
+            taskList.renderToTable(tblModel);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
+
+    }//GEN-LAST:event_btnAddTaskActionPerformed
+
+    private void btnClearFinishedTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearFinishedTaskActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnClearFinishedTaskActionPerformed
 
     /**
      * @param args the command line arguments

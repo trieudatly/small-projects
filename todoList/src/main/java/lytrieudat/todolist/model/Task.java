@@ -4,6 +4,7 @@
  */
 package lytrieudat.todolist.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -11,28 +12,20 @@ import java.util.Date;
  *
  * @author lytri
  */
-public class Task {
+public class Task implements Serializable {
 
-    private String id, detail;
+    private String detail;
     private LocalDate date;
     private boolean checked;
 
     public Task() {
     }
 
-    public Task(String id, String detail, LocalDate date, boolean checked) {
-        this.id = id;
+    public Task(String detail, LocalDate date, boolean checked) {
+
         this.detail = detail;
         this.date = date;
         this.checked = checked;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getDetail() {
