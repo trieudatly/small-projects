@@ -5,6 +5,7 @@
 package lytrieudat.todolist;
 
 //import javafx.scene.control.Tab;
+import java.awt.HeadlessException;
 import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,7 +23,6 @@ public class TodoList extends javax.swing.JFrame {
 
     private DefaultTableModel tblModel = null;
     private TaskList taskList = new TaskList();
-    boolean isUpdatable = false;
 
     /**
      * Creates new form TodoList
@@ -39,8 +39,7 @@ public class TodoList extends javax.swing.JFrame {
 
         tblModel = (DefaultTableModel) tblList.getModel();
 
-        tblModel.setColumnIdentifiers(new Object[]{"Date", "Detail", "State"});
-
+        //tblModel.setColumnIdentifiers(new Object[]{"Date", "Detail", "State"});
         tblList.setModel(tblModel);
     }
 
@@ -72,13 +71,15 @@ public class TodoList extends javax.swing.JFrame {
         btnAddTask = new javax.swing.JButton();
         btnClearAll = new javax.swing.JButton();
         btnCheck = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("To Do List");
         setMinimumSize(new java.awt.Dimension(500, 700));
-        setPreferredSize(new java.awt.Dimension(500, 700));
+        setPreferredSize(new java.awt.Dimension(550, 700));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("To Do List");
 
         tblList.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -90,7 +91,7 @@ public class TodoList extends javax.swing.JFrame {
                 {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3"
+                "Date", "Task", "Stage"
             }
         ) {
             Class[] types = new Class [] {
@@ -142,6 +143,22 @@ public class TodoList extends javax.swing.JFrame {
             }
         });
 
+        btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
+        btnUpdate.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -149,24 +166,29 @@ public class TodoList extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(182, 182, 182)
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnAddTask)
-                        .addGap(79, 79, 79)
-                        .addComponent(btnCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnClearAll))
-                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtInput, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
                             .addComponent(jSeparator1)
-                            .addComponent(jSeparator2))))
+                            .addComponent(jSeparator2)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnAddTask)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnUpdate)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnCheck)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnDelete)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnClearAll)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(208, 208, 208)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -180,12 +202,14 @@ public class TodoList extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtInput, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                .addComponent(txtInput)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAddTask)
-                    .addComponent(btnClearAll)
-                    .addComponent(btnCheck, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnAddTask, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnClearAll, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnCheck, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnUpdate))
                 .addGap(30, 30, 30))
         );
 
@@ -216,6 +240,7 @@ public class TodoList extends javax.swing.JFrame {
 
     private void btnClearAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearAllActionPerformed
         try {
+            txtInput.setText("");
             taskList.clearList();
             loadTaskList();
         } catch (Exception e) {
@@ -230,8 +255,6 @@ public class TodoList extends javax.swing.JFrame {
             Task task = taskList.findByDetail(taskDetail);
             if (task != null) {
                 txtInput.setText(taskDetail);
-                btnAddTask.setText("Update");
-                isUpdatable = true;
             }
         }
     }//GEN-LAST:event_tblListMouseClicked
@@ -241,6 +264,7 @@ public class TodoList extends javax.swing.JFrame {
         if (row >= 0) {
             String taskDetail = (String) tblList.getValueAt(row, 1);
             Task task = taskList.findByDetail(taskDetail);
+
             if (task != null) {
                 try {
                     taskList.checkTask(task);
@@ -252,6 +276,44 @@ public class TodoList extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnCheckActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        try {
+            int row = tblList.getSelectedRow();
+            if (row >= 0) {
+                String taskDetail = (String) tblList.getValueAt(row, 1);
+                boolean isOK = taskList.deleteByDetail(taskDetail);
+                if (isOK) {
+                    txtInput.setText("");
+                    taskList.saveToFile();
+                    taskList.renderToTable(tblModel);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Delete fail!");
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        try {
+            int row = tblList.getSelectedRow();
+            if (row >= 0) {
+                String taskDetail = (String) tblList.getValueAt(row, 1);
+                boolean isOK = taskList.updateByDetail(taskDetail, txtInput.getText());
+                if (isOK) {
+                    txtInput.setText("");
+                    taskList.saveToFile();
+                    taskList.renderToTable(tblModel);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Update fail!");
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
+    }//GEN-LAST:event_btnUpdateActionPerformed
 
     /**
      * @param args the command line arguments
@@ -292,6 +354,8 @@ public class TodoList extends javax.swing.JFrame {
     private javax.swing.JButton btnAddTask;
     private javax.swing.JButton btnCheck;
     private javax.swing.JButton btnClearAll;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnUpdate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;

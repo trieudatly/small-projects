@@ -5,7 +5,6 @@
 package lytrieudat.todolist.model;
 
 import java.io.File;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import lytrieudat.todolist.helper.XFile;
@@ -18,8 +17,6 @@ public class TaskList {
 
     private ArrayList<Task> list = new ArrayList<>();
     private String path = "todo.dat";
-    //private int currentIndex = 0;
-    LocalDate today = LocalDate.now();
 
     public void saveToFile() throws Exception {
         XFile.writeObject(path, list);
@@ -34,17 +31,28 @@ public class TaskList {
         }
     }
 
-    private void initNewTask() {
-        list.add(new Task("Have a nice day", today, false));
-
-    }
-
     public void add(Task task) {
         list.add(task);
     }
 
-    public void update(Task task) {
+    public boolean deleteByDetail(String taskDetail) {
+        for (Task task : list) {
+            if (task.getDetail().equals(taskDetail)) {
+                list.remove(task);
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public boolean updateByDetail(String taskDetail, String update) {
+        for (Task task : list) {
+            if (task.getDetail().equals(taskDetail)) {
+                task.setDetail(update);
+                return true;
+            }
+        }
+        return false;
     }
 
     public void clearList() throws Exception {
@@ -52,34 +60,12 @@ public class TaskList {
         saveToFile();
     }
 
-//    public void setCurrentTask(Task task) {
-//        currentIndex = list.indexOf(task);
-//    }
-//
-//    public Task getCurrentTask() {
-//        if (list.size() == 0) {
-//            return null;
-//        }
-//        return list.get(currentIndex);
-//    }
-//    public boolean CheckTask(Task task) throws Exception {
-//        Task existTask = findByDetail(task.getDetail());
-//        boolean flag = false;
-//        if (existTask != null) {
-//            existTask.setChecked(true);
-//            saveToFile();
-//            flag = true;
-//
-//        }
-//        return flag;
-//    }
     public void checkTask(Task task) {
         if (!task.isChecked()) {
             task.setChecked(true);
         } else {
             task.setChecked(false);
         }
-
     }
 
     public Task findByDetail(String taskDetail) {
