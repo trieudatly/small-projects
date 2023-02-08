@@ -18,7 +18,7 @@ public class TaskList {
 
     private ArrayList<Task> list = new ArrayList<>();
     private String path = "todo.dat";
-    private int currentIndex = 0;
+    //private int currentIndex = 0;
     LocalDate today = LocalDate.now();
 
     public void saveToFile() throws Exception {
@@ -35,7 +35,7 @@ public class TaskList {
     }
 
     private void initNewTask() {
-        list.add(new Task("go to bed", today, false));
+        list.add(new Task("Have a nice day", today, false));
 
     }
 
@@ -43,11 +43,53 @@ public class TaskList {
         list.add(task);
     }
 
-    public Task getCurrentEmployee() {
-        if (list.size() == 0) {
-            return null;
+    public void update(Task task) {
+
+    }
+
+    public void clearList() throws Exception {
+        list.clear();
+        saveToFile();
+    }
+
+//    public void setCurrentTask(Task task) {
+//        currentIndex = list.indexOf(task);
+//    }
+//
+//    public Task getCurrentTask() {
+//        if (list.size() == 0) {
+//            return null;
+//        }
+//        return list.get(currentIndex);
+//    }
+//    public boolean CheckTask(Task task) throws Exception {
+//        Task existTask = findByDetail(task.getDetail());
+//        boolean flag = false;
+//        if (existTask != null) {
+//            existTask.setChecked(true);
+//            saveToFile();
+//            flag = true;
+//
+//        }
+//        return flag;
+//    }
+    public void checkTask(Task task) {
+        if (!task.isChecked()) {
+            task.setChecked(true);
+        } else {
+            task.setChecked(false);
         }
-        return list.get(currentIndex);
+
+    }
+
+    public Task findByDetail(String taskDetail) {
+        for (Task task : list) {
+            if (task.getDetail().equals(taskDetail)) {
+
+                return task;
+            }
+        }
+        return null;
     }
 
     public void renderToTable(DefaultTableModel tblModel) {

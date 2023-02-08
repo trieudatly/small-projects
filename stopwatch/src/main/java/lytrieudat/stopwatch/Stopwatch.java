@@ -58,6 +58,8 @@ public class Stopwatch extends javax.swing.JFrame {
         btnReset = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("STOP WATCH");
+        setAutoRequestFocus(false);
 
         lblTime.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblTime.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
