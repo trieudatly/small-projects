@@ -34,7 +34,7 @@ public class TodoList extends javax.swing.JFrame {
 
     public void initTable() {
         tblModel = (DefaultTableModel) tblList.getModel();
-        tblModel.setColumnIdentifiers(new Object[]{"Detail", "Date", "State"});
+        tblModel.setColumnIdentifiers(new Object[]{"Date", "Detail", "State"});
 
         tblList.setModel(tblModel);
     }
@@ -90,12 +90,24 @@ public class TodoList extends javax.swing.JFrame {
             Class[] types = new Class [] {
                 java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
         tblList.setRowHeight(40);
+        tblList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblListMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblList);
 
         txtInput.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -170,7 +182,7 @@ public class TodoList extends javax.swing.JFrame {
     private void btnAddTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddTaskActionPerformed
         try {
             StringBuilder sb = new StringBuilder();
-            Validator.checkEmpty(txtInput, sb, "Please write some thing!!!");
+            Validator.checkEmpty(txtInput, sb, "Please write a task!!!");
             if (sb.length() > 0) {
                 JOptionPane.showMessageDialog(this, sb.toString(), "Invalid Data", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -192,6 +204,10 @@ public class TodoList extends javax.swing.JFrame {
     private void btnClearFinishedTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearFinishedTaskActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnClearFinishedTaskActionPerformed
+
+    private void tblListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblListMouseClicked
+        int row = tblList.getSelectedRow();
+    }//GEN-LAST:event_tblListMouseClicked
 
     /**
      * @param args the command line arguments
