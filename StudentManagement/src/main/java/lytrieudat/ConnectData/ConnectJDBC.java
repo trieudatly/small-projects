@@ -81,7 +81,7 @@ public class ConnectJDBC {
     }
 
     public void update(Student st) {
-        String query = "UPDATE studentmn.student set name=?,age=?,gender=?,major=?,score=? WHERE name='" + st.getName() + "'";
+        String query = "UPDATE studentmn.student set name=?,age=?,gender=?,major=?,score=? WHERE id='" + st.getId() + "'";
         try {
             Connection connection = getConnection();
             PreparedStatement pstmt = connection.prepareStatement(query);

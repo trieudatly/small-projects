@@ -22,6 +22,7 @@ public class FrameStudent extends javax.swing.JFrame {
      */
     public FrameStudent() {
         initComponents();
+        lblId.setVisible(false);
         setLocationRelativeTo(null);
         showData(con.findAll());
     }
@@ -75,6 +76,7 @@ public class FrameStudent extends javax.swing.JFrame {
         btnUpdate = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblStudent = new javax.swing.JTable();
+        lblId = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -176,6 +178,11 @@ public class FrameStudent extends javax.swing.JFrame {
                 "ID", "Name", "Age", "Gender", "Major", "Score"
             }
         ));
+        tblStudent.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblStudentMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblStudent);
         if (tblStudent.getColumnModel().getColumnCount() > 0) {
             tblStudent.getColumnModel().getColumn(0).setPreferredWidth(30);
@@ -189,6 +196,8 @@ public class FrameStudent extends javax.swing.JFrame {
             tblStudent.getColumnModel().getColumn(5).setPreferredWidth(50);
             tblStudent.getColumnModel().getColumn(5).setMaxWidth(50);
         }
+
+        lblId.setText("jLabel7");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -227,15 +236,18 @@ public class FrameStudent extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(txtScore, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtMajor, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(cbbGender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel4)
+                                            .addComponent(jLabel5)
+                                            .addComponent(jLabel6))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addComponent(txtScore, javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(txtMajor, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(cbbGender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(lblId))
                                 .addGap(18, 18, 18)
                                 .addComponent(jScrollPane1))
                             .addComponent(jSeparator2))))
@@ -269,7 +281,9 @@ public class FrameStudent extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(txtScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(lblId))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -322,6 +336,7 @@ public class FrameStudent extends javax.swing.JFrame {
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         Student st = new Student();
+        st.setId(Integer.parseInt(lblId.getText()));
         st.setName(txtName.getText());
         st.setAge(Integer.parseInt(txtAge.getText()));
         st.setMajor(txtMajor.getText());
@@ -331,6 +346,19 @@ public class FrameStudent extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Save success!");
         showData(con.findAll());
     }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void tblStudentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblStudentMouseClicked
+        int row = tblStudent.getSelectedRow();
+        if (row >= 0) {
+            lblId.setText(tblStudent.getValueAt(row, 0).toString());
+            txtName.setText((String) tblStudent.getValueAt(row, 1));
+            txtAge.setText(tblStudent.getValueAt(row, 2).toString());
+            cbbGender.setSelectedItem((String) tblStudent.getValueAt(row, 3));
+            txtMajor.setText((String) tblStudent.getValueAt(row, 4));
+            txtScore.setText((String) tblStudent.getValueAt(row, 5).toString());
+
+        }
+    }//GEN-LAST:event_tblStudentMouseClicked
 
     /**
      * @param args the command line arguments
@@ -382,6 +410,7 @@ public class FrameStudent extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JLabel lblId;
     private javax.swing.JTable tblStudent;
     private javax.swing.JTextField txtAge;
     private javax.swing.JTextField txtMajor;
