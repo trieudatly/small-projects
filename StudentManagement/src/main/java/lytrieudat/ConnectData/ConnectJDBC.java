@@ -71,7 +71,7 @@ public class ConnectJDBC {
     }
 
     public void delete(Student st) {
-        String query = "DELETE FROM student WHERE name='" + st.getName() + "'";
+        String query = "DELETE FROM student WHERE id='" + st.getId() + "'";
         try {
             Connection connection = getConnection();
             PreparedStatement pstmt = connection.prepareStatement(query);

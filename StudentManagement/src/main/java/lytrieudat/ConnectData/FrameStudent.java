@@ -323,7 +323,7 @@ public class FrameStudent extends javax.swing.JFrame {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         Student st = new Student();
-        st.setName(txtName.getText());
+        st.setId(Integer.parseInt(lblId.getText()));
         con.delete(st);
         showData(con.findAll());
     }//GEN-LAST:event_btnDeleteActionPerformed

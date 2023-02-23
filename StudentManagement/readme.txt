@@ -1,0 +1,1 @@
+please excecute script in studentmn.sql with mySQL first
