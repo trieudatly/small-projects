@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
  * @author lytri
  */
 public class FrameStudent extends javax.swing.JFrame {
-
+    
     private ConnectJDBC con = new ConnectJDBC();
 
     /**
@@ -26,7 +26,7 @@ public class FrameStudent extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         showData(con.findAll());
     }
-
+    
     public void showData(List<Student> st) {
         List<Student> listStudent = new ArrayList<>();
         listStudent = st;
@@ -45,7 +45,7 @@ public class FrameStudent extends javax.swing.JFrame {
                 student.getId(), student.getName(), student.getAge(), gender, student.getMajor(), student.getScore()
             });
         });
-
+        
     }
 
     /**
@@ -301,14 +301,16 @@ public class FrameStudent extends javax.swing.JFrame {
     private void cbbGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbGenderActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbbGenderActionPerformed
-
+    
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         txtName.setText("");
         txtAge.setText("");
         txtMajor.setText("");
         txtScore.setText("");
+        lblId.setText("");
+        showData(con.findAll());
     }//GEN-LAST:event_btnRefreshActionPerformed
-
+    
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         Student st = new Student();
         st.setName(txtName.getText());
@@ -320,20 +322,20 @@ public class FrameStudent extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Save success!");
         showData(con.findAll());
     }//GEN-LAST:event_btnSaveActionPerformed
-
+    
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         Student st = new Student();
         st.setId(Integer.parseInt(lblId.getText()));
         con.delete(st);
         showData(con.findAll());
     }//GEN-LAST:event_btnDeleteActionPerformed
-
+    
     private void btnFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindActionPerformed
         Student st = new Student();
         st.setName(txtName.getText());
         showData(con.findByName(st));
     }//GEN-LAST:event_btnFindActionPerformed
-
+    
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         Student st = new Student();
         st.setId(Integer.parseInt(lblId.getText()));
@@ -346,7 +348,7 @@ public class FrameStudent extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Save success!");
         showData(con.findAll());
     }//GEN-LAST:event_btnUpdateActionPerformed
-
+    
     private void tblStudentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblStudentMouseClicked
         int row = tblStudent.getSelectedRow();
         if (row >= 0) {
@@ -356,7 +358,7 @@ public class FrameStudent extends javax.swing.JFrame {
             cbbGender.setSelectedItem((String) tblStudent.getValueAt(row, 3));
             txtMajor.setText((String) tblStudent.getValueAt(row, 4));
             txtScore.setText((String) tblStudent.getValueAt(row, 5).toString());
-
+            
         }
     }//GEN-LAST:event_tblStudentMouseClicked
 
